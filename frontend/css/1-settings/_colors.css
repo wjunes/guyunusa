@@ -1,0 +1,37 @@
+/* Paleta Guyunusa — inspirada en la bandera y la tierra uruguaya */
+:root {
+  /* Primarios */
+  --color-azul:      #005BAA; /* azul patrio */
+  --color-azul-dark: #003f7a;
+  --color-azul-light:#e8f0fb;
+
+  /* Naturales */
+  --color-tierra:    #8B5E3C; /* tierra colorada */
+  --color-mate:      #4a7c59; /* verde del campo */
+
+  /* Neutros */
+  --color-white:     #ffffff;
+  --color-gray-50:   #f7f7f6;
+  --color-gray-100:  #eeede9;
+  --color-gray-200:  #d6d4cc;
+  --color-gray-400:  #9e9b90;
+  --color-gray-600:  #5f5d55;
+  --color-gray-800:  #2c2b26;
+  --color-black:     #111110;
+
+  /* Semánticos — modo claro (default) */
+  --bg-primary:      var(--color-white);
+  --bg-secondary:    var(--color-gray-50);
+  --bg-sidebar:      var(--color-gray-100);
+  --bg-user-msg:     var(--color-azul);
+  --bg-ai-msg:       var(--color-gray-100);
+
+  --text-primary:    var(--color-gray-800);
+  --text-secondary:  var(--color-gray-600);
+  --text-muted:      var(--color-gray-400);
+  --text-on-accent:  var(--color-white);
+
+  --border-color:    var(--color-gray-200);
+  --accent:          var(--color-azul);
+  --accent-hover:    var(--color-azul-dark);
+}

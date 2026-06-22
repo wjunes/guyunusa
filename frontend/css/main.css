@@ -1,0 +1,37 @@
+/* =============================================
+   GUYUNUSA — main.css
+   Arquitectura ITCSS — importaciones en cascada
+   ============================================= */
+
+/* 1. Settings — variables globales */
+@import './1-settings/_variables.css';
+@import './1-settings/_colors.css';
+@import './1-settings/_typography.css';
+
+/* 2. Tools — helpers CSS (custom properties calculadas) */
+@import './2-tools/_mixins.css';
+
+/* 3. Generic — reset y normalización */
+@import './3-generic/_reset.css';
+@import './3-generic/_box-sizing.css';
+
+/* 4. Elements — estilos de etiquetas HTML base */
+@import './4-elements/_base.css';
+@import './4-elements/_forms.css';
+
+/* 5. Objects — patrones de layout sin estilo visual */
+@import './5-objects/_container.css';
+@import './5-objects/_layout.css';
+
+/* 6. Components — componentes de UI específicos */
+@import './6-components/_auth.css';
+@import './6-components/_header.css';
+@import './6-components/_sidebar.css';
+@import './6-components/_chat.css';
+@import './6-components/_message.css';
+@import './6-components/_input-bar.css';
+@import './6-components/_modal.css';
+
+/* 7. Trumps — utilidades, overrides, themes */
+@import './7-trumps/_utilities.css';
+@import './7-trumps/_themes.css';

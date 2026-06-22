@@ -1,0 +1,17 @@
+:root {
+  --font-sans:  'Segoe UI', system-ui, -apple-system, sans-serif;
+  --font-mono:  'Cascadia Code', 'Fira Code', 'Courier New', monospace;
+
+  --text-xs:    12px;
+  --text-sm:    14px;
+  --text-base:  16px;
+  --text-lg:    18px;
+  --text-xl:    22px;
+
+  --weight-normal: 400;
+  --weight-medium: 500;
+  --weight-bold:   600;
+
+  --leading-tight:  1.35;
+  --leading-normal: 1.6;
+}
