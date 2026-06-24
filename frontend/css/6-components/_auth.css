@@ -1,0 +1,177 @@
+/* ===== Pantalla de Auth (login / registro) ===== */
+
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Panel izquierdo — identidad visual */
+.auth-brand {
+  background: var(--color-azul-dark);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.auth-brand::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 20%, rgba(232,184,75,.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 70% 80%, rgba(61,107,74,.15) 0%, transparent 55%);
+  pointer-events: none;
+}
+
+.auth-brand__logo {
+  position: relative;
+  margin-bottom: var(--space-lg);
+}
+
+.auth-brand__name {
+  font-size: 38px;
+  font-weight: 700;
+  color: var(--color-white);
+  letter-spacing: -0.5px;
+  margin-bottom: var(--space-sm);
+  position: relative;
+}
+
+.auth-brand__tagline {
+  font-size: var(--text-sm);
+  color: rgba(255,255,255,.65);
+  text-align: center;
+  max-width: 240px;
+  line-height: 1.55;
+  position: relative;
+}
+
+.auth-brand__footer {
+  position: absolute;
+  bottom: var(--space-lg);
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,.35);
+  letter-spacing: .04em;
+}
+
+/* Decoración: franjas de la bandera */
+.auth-brand__stripes {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 6px;
+  display: flex;
+}
+.auth-brand__stripes span {
+  flex: 1;
+}
+.auth-brand__stripes span:nth-child(odd)  { background: var(--color-white); opacity: .15; }
+.auth-brand__stripes span:nth-child(even) { background: var(--color-azul-mid); opacity: .3; }
+
+/* Panel derecho — formulario */
+.auth-form-panel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-xl);
+  background: var(--bg-app);
+}
+
+.auth-form-wrap {
+  width: 100%;
+  max-width: 380px;
+}
+
+.auth-form-wrap h2 {
+  font-size: var(--text-xl);
+  margin-bottom: var(--space-xs);
+}
+
+.auth-form-wrap .auth-subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-bottom: var(--space-xl);
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.auth-divider {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: var(--space-sm) 0;
+}
+
+.auth-switch {
+  text-align: center;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--space-md);
+}
+
+.auth-switch a {
+  color: var(--accent);
+  font-weight: var(--weight-medium);
+}
+
+.auth-alert {
+  padding: 10px var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  display: none;
+}
+.auth-alert.error {
+  display: block;
+  background: #fdf0ef;
+  color: #c0392b;
+  border: 1px solid #f5c6c2;
+}
+.auth-alert.success {
+  display: block;
+  background: var(--color-mate-light);
+  color: var(--color-mate);
+  border: 1px solid #b8d9c2;
+}
+
+/* Responsivo */
+@media (max-width: 680px) {
+  .auth-screen { grid-template-columns: 1fr; }
+  .auth-brand  { display: none; }
+  .auth-form-panel { padding: var(--space-lg) var(--space-md); }
+}
+
+/* Botón de tema flotante en pantallas de auth */
+.auth-theme-btn {
+  position: fixed;
+  top: var(--space-md);
+  right: var(--space-md);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: background var(--transition), color var(--transition),
+              border-color var(--transition), transform var(--transition);
+  z-index: 50;
+}
+.auth-theme-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.08);
+}

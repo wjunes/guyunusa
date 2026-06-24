@@ -29,3 +29,8 @@ export function logout(store) {
   localStorage.removeItem('guyunusa_token');
   store.update({ user: null, token: null, conversations: [], messages: [] });
 }
+
+export async function deleteAccount(password) {
+  const data = await api.delete('/user', { password });
+  return data;
+}

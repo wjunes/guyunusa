@@ -35,3 +35,9 @@
 /* 7. Trumps — utilidades, overrides, themes */
 @import './7-trumps/_utilities.css';
 @import './7-trumps/_themes.css';
+
+/* Mobile / Capacitor overrides */
+@import './7-trumps/_mobile.css';
+
+/* Settings */
+@import './6-components/_settings.css';

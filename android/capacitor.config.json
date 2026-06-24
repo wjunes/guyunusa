@@ -1,0 +1,44 @@
+{
+  "appId":      "uy.guyunusa.app",
+  "appName":    "Guyunusa",
+  "webDir":     "../frontend",
+  "bundledWebRuntime": false,
+  "server": {
+    "androidScheme": "https",
+    "cleartext":     false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration":    2500,
+      "launchAutoHide":        true,
+      "backgroundColor":       "#1a4fa0",
+      "androidSplashResourceName": "splash",
+      "androidScaleType":      "CENTER_CROP",
+      "showSpinner":           false,
+      "splashFullScreen":      true,
+      "splashImmersive":       true
+    },
+    "StatusBar": {
+      "style":           "DARK",
+      "backgroundColor": "#1a4fa0",
+      "overlaysWebView": false
+    },
+    "Keyboard": {
+      "resize":          "body",
+      "resizeOnFullScreen": true,
+      "style":           "DARK"
+    },
+    "Preferences": {
+      "group": "guyunusa"
+    }
+  },
+  "android": {
+    "buildOptions": {
+      "keystorePath":  "guyunusa-release.keystore",
+      "keystoreAlias": "guyunusa"
+    },
+    "allowMixedContent":  false,
+    "captureInput":       true,
+    "webContentsDebuggingEnabled": false
+  }
+}

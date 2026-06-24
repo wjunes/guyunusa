@@ -1,37 +1,55 @@
-/* Paleta Guyunusa — inspirada en la bandera y la tierra uruguaya */
+/* Paleta Guyunusa — identidad uruguaya */
 :root {
-  /* Primarios */
-  --color-azul:      #005BAA; /* azul patrio */
-  --color-azul-dark: #003f7a;
-  --color-azul-light:#e8f0fb;
+  /* Azul patrio */
+  --color-azul:        #1a4fa0;
+  --color-azul-dark:   #0e3270;
+  --color-azul-mid:    #2d65b8;
+  --color-azul-light:  #dce8f8;
+  --color-azul-soft:   #f0f5fd;
 
-  /* Naturales */
-  --color-tierra:    #8B5E3C; /* tierra colorada */
-  --color-mate:      #4a7c59; /* verde del campo */
+  /* Tierra y campo */
+  --color-tierra:      #8b5e3c;
+  --color-mate:        #3d6b4a;
+  --color-mate-light:  #e8f2eb;
 
-  /* Neutros */
-  --color-white:     #ffffff;
-  --color-gray-50:   #f7f7f6;
-  --color-gray-100:  #eeede9;
-  --color-gray-200:  #d6d4cc;
-  --color-gray-400:  #9e9b90;
-  --color-gray-600:  #5f5d55;
-  --color-gray-800:  #2c2b26;
-  --color-black:     #111110;
+  /* Sol de Mayo */
+  --color-sol:         #e8b84b;
+  --color-sol-light:   #fdf3d8;
 
-  /* Semánticos — modo claro (default) */
-  --bg-primary:      var(--color-white);
-  --bg-secondary:    var(--color-gray-50);
-  --bg-sidebar:      var(--color-gray-100);
-  --bg-user-msg:     var(--color-azul);
-  --bg-ai-msg:       var(--color-gray-100);
+  /* Neutros cálidos (tierra rioplatense) */
+  --color-white:       #ffffff;
+  --color-cream:       #faf9f6;
+  --color-gray-50:     #f4f3ef;
+  --color-gray-100:    #e8e6df;
+  --color-gray-200:    #cec9be;
+  --color-gray-400:    #9c9585;
+  --color-gray-600:    #5e5749;
+  --color-gray-800:    #2b2620;
+  --color-black:       #100e0a;
 
-  --text-primary:    var(--color-gray-800);
-  --text-secondary:  var(--color-gray-600);
-  --text-muted:      var(--color-gray-400);
-  --text-on-accent:  var(--color-white);
+  /* Semánticos — modo claro */
+  --bg-app:            var(--color-cream);
+  --bg-primary:        var(--color-white);
+  --bg-secondary:      var(--color-gray-50);
+  --bg-sidebar:        #f0ede6;
+  --bg-sidebar-hover:  #e6e2d9;
+  --bg-sidebar-active: var(--color-azul-light);
 
-  --border-color:    var(--color-gray-200);
-  --accent:          var(--color-azul);
-  --accent-hover:    var(--color-azul-dark);
+  --bg-user-msg:       var(--color-azul);
+  --bg-ai-msg:         var(--color-white);
+
+  --text-primary:      var(--color-gray-800);
+  --text-secondary:    var(--color-gray-600);
+  --text-muted:        var(--color-gray-400);
+  --text-on-accent:    var(--color-white);
+  --text-user-msg:     var(--color-white);
+  --text-ai-msg:       var(--color-gray-800);
+
+  --border-color:      var(--color-gray-100);
+  --border-strong:     var(--color-gray-200);
+
+  --accent:            var(--color-azul);
+  --accent-mid:        var(--color-azul-mid);
+  --accent-hover:      var(--color-azul-dark);
+  --accent-bg:         var(--color-azul-soft);
 }

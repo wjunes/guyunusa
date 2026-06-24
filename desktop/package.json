@@ -1,0 +1,53 @@
+{
+  "name": "guyunusa-desktop",
+  "version": "1.0.0",
+  "description": "Guyunusa — App desktop con Electron",
+  "main": "main.js",
+  "scripts": {
+    "start":  "electron .",
+    "dev":    "electron . --dev",
+    "build":  "electron-builder",
+    "build:win":   "electron-builder --win",
+    "build:mac":   "electron-builder --mac",
+    "build:linux": "electron-builder --linux"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "electron":         "^30.0.0",
+    "electron-builder": "^24.0.0"
+  },
+  "build": {
+    "appId":       "uy.guyunusa.app",
+    "productName": "Guyunusa",
+    "copyright":   "© 2025 Algoritmos.uy",
+    "directories": {
+      "buildResources": "assets",
+      "output":         "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "assets/**",
+      "../frontend/**"
+    ],
+    "win": {
+      "target": ["nsis"],
+      "icon":   "assets/icon.ico"
+    },
+    "mac": {
+      "target": ["dmg"],
+      "icon":   "assets/icon.icns",
+      "category": "public.app-category.productivity"
+    },
+    "linux": {
+      "target": ["AppImage", "deb"],
+      "icon":   "assets/icon.png",
+      "category": "Utility"
+    },
+    "nsis": {
+      "oneClick":        false,
+      "allowToChangeInstallationDirectory": true,
+      "installerLanguages": ["es_UY", "es_AR", "en_US"]
+    }
+  }
+}

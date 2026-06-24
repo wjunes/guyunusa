@@ -1,0 +1,90 @@
+/* =============================================
+   TEMAS — Guyunusa
+   Sistema dual: respeta preferencia del sistema
+   y permite toggle manual con data-theme
+   ============================================= */
+
+/* Modo oscuro por preferencia del sistema */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg-app:            #1a1814;
+    --bg-primary:        #22201c;
+    --bg-secondary:      #2a2720;
+    --bg-sidebar:        #1e1c18;
+    --bg-sidebar-hover:  #2a2720;
+    --bg-sidebar-active: #1a3060;
+
+    --bg-ai-msg:         #2a2720;
+    --bg-user-msg:       var(--color-azul-mid);
+
+    --text-primary:      #e8e4db;
+    --text-secondary:    #a89e8e;
+    --text-muted:        #6b6254;
+    --text-ai-msg:       #e8e4db;
+
+    --border-color:      #2e2b24;
+    --border-strong:     #3a3629;
+
+    --accent-bg:         #0e2040;
+    --color-azul-light:  #1a3060;
+    --color-sol-light:   #2a2010;
+  }
+}
+
+/* Modo oscuro forzado por toggle manual */
+:root[data-theme="dark"] {
+  --bg-app:            #1a1814;
+  --bg-primary:        #22201c;
+  --bg-secondary:      #2a2720;
+  --bg-sidebar:        #1e1c18;
+  --bg-sidebar-hover:  #2a2720;
+  --bg-sidebar-active: #1a3060;
+
+  --bg-ai-msg:         #2a2720;
+  --bg-user-msg:       var(--color-azul-mid);
+
+  --text-primary:      #e8e4db;
+  --text-secondary:    #a89e8e;
+  --text-muted:        #6b6254;
+  --text-ai-msg:       #e8e4db;
+
+  --border-color:      #2e2b24;
+  --border-strong:     #3a3629;
+
+  --accent-bg:         #0e2040;
+  --color-azul-light:  #1a3060;
+  --color-sol-light:   #2a2010;
+}
+
+/* Modo claro forzado (override del sistema) */
+:root[data-theme="light"] {
+  --bg-app:            #faf9f6;
+  --bg-primary:        #ffffff;
+  --bg-secondary:      #f4f3ef;
+  --bg-sidebar:        #f0ede6;
+  --bg-sidebar-hover:  #e6e2d9;
+  --bg-sidebar-active: #dce8f8;
+
+  --bg-ai-msg:         #ffffff;
+  --bg-user-msg:       #1a4fa0;
+
+  --text-primary:      #2b2620;
+  --text-secondary:    #5e5749;
+  --text-muted:        #9c9585;
+  --text-ai-msg:       #2b2620;
+
+  --border-color:      #e8e6df;
+  --border-strong:     #cec9be;
+
+  --accent-bg:         #f0f5fd;
+  --color-azul-light:  #dce8f8;
+  --color-sol-light:   #fdf3d8;
+}
+
+/* Transición suave al cambiar tema */
+:root {
+  transition:
+    background-color 220ms ease,
+    color 220ms ease,
+    border-color 220ms ease;
+}
