@@ -10,18 +10,12 @@
   --safe-right:  env(safe-area-inset-right,  0px);
 }
 
-/* En Capacitor el body ocupa toda la pantalla */
-.capacitor body {
-  padding-top:    var(--safe-top);
-  padding-bottom: var(--safe-bottom);
-}
-
-/* Evitar zoom al hacer foco en inputs (iOS/Android) */
+/* Evitar zoom al hacer foco en inputs */
 input, textarea, select {
   font-size: max(16px, 1rem);
 }
 
-/* Touch: deshabilitar selección de texto en elementos de UI */
+/* Deshabilitar selección en elementos de UI */
 .c-sidebar__item,
 .c-header,
 .c-input-bar__send,
@@ -32,56 +26,19 @@ input, textarea, select {
   -webkit-tap-highlight-color: transparent;
 }
 
-/* Permitir selección en burbujas de mensajes */
+/* Permitir selección en burbujas */
 .c-message__bubble {
   -webkit-user-select: text;
   user-select: text;
 }
 
-/* Input bar fijado sobre el teclado en mobile */
+/* Input bar pegado sobre el teclado en mobile */
 @media (max-width: 640px) {
-  .o-main {
-    grid-template-rows: var(--header-h) 1fr auto;
-  }
-
-  .c-input-bar {
+  .o-inputbar {
     position: sticky;
     bottom: 0;
-    padding-bottom: max(var(--space-md), var(--safe-bottom));
-  }
-
-  /* Sidebar en mobile: full-width como drawer */
-  .o-app {
-    grid-template-columns: 1fr;
-  }
-
-  .o-sidebar {
-    position: fixed;
-    inset: 0;
-    z-index: 100;
-    width: min(280px, 85vw);
-    transform: translateX(-100%);
-    transition: transform 280ms cubic-bezier(.4,0,.2,1);
-    box-shadow: none;
-  }
-
-  .o-sidebar--open {
-    transform: translateX(0);
-    box-shadow: var(--shadow-md);
-  }
-
-  /* Overlay cuando el sidebar está abierto en mobile */
-  .o-sidebar-overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.4);
-    z-index: 99;
-    backdrop-filter: blur(2px);
-  }
-  .o-sidebar-overlay--visible {
-    display: block;
-    animation: fadeIn .2s ease;
+    padding-bottom: max(0px, var(--safe-bottom));
+    background: var(--bg-primary);
   }
 
   /* Mensajes más anchos en pantalla chica */
@@ -90,23 +47,23 @@ input, textarea, select {
     max-width: 92%;
   }
 
-  /* Header más compacto */
-  .c-header__new-btn span { display: none; } /* ocultar texto "Nuevo" */
+  /* Ocultar texto "Nuevo" en header pequeño */
+  .c-header__new-btn span { display: none; }
 }
 
-/* Swipe gesture visual feedback */
-.c-sidebar__item:active {
-  background: var(--bg-sidebar-active);
-  transition: none;
-}
-
-/* Scroll con momentum en iOS */
+/* Scroll con momentum */
 .c-chat__messages,
 .c-sidebar__list {
   -webkit-overflow-scrolling: touch;
 }
 
-/* Prevent overscroll bounce en Android */
+/* Evitar bounce en Android */
 body {
   overscroll-behavior: none;
+}
+
+/* Touch feedback */
+.c-sidebar__item:active {
+  background: var(--bg-sidebar-active);
+  transition: none;
 }

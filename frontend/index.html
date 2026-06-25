@@ -10,18 +10,41 @@
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 
-  <!-- Prevenir flash de tema incorrecto -->
+  <!-- Anti-flash: aplicar tema antes de que cargue el CSS -->
   <script>
     (function() {
-      var t = localStorage.getItem('guyunusa_theme');
-      var dark = t === 'dark' ||
-        (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
-      if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      try {
+        var t    = localStorage.getItem('guyunusa_theme');
+        var dark = t === 'dark' ||
+          (t !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+        if (dark) document.documentElement.setAttribute('data-theme', 'dark');
+      } catch(e) {}
     })();
   </script>
 
   <title>Guyunusa</title>
   <link rel="stylesheet" href="css/main.css"/>
+
+  <style>
+    .app-loading {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      background: #faf9f6;
+    }
+    [data-theme="dark"] .app-loading { background: #1a1814; }
+    .app-loading__sol { animation: sol-spin 2s linear infinite; }
+    @keyframes sol-spin { to { transform: rotate(360deg); } }
+    .app-loading__text {
+      font-family: system-ui, sans-serif;
+      font-size: 14px;
+      color: #9c9585;
+    }
+    [data-theme="dark"] .app-loading__text { color: #6b6254; }
+  </style>
 </head>
 <body>
   <div id="app">
@@ -38,32 +61,12 @@
     </div>
   </div>
 
-  <!-- Capacitor runtime (solo existe en la app nativa) -->
-  <script src="capacitor.js" onerror="void(0)"></script>
+  <!--
+    Capacitor se inyecta automáticamente por el runtime nativo de Android.
+    En web/desktop NO existe este archivo — no hay que cargarlo manualmente.
+    El módulo native.js detecta window.Capacitor en tiempo de ejecución.
+  -->
 
   <script type="module" src="js/app.js"></script>
-
-  <style>
-    .app-loading {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px;
-      background: #faf9f6;
-    }
-    [data-theme="dark"] .app-loading { background: #1a1814; }
-    .app-loading__sol {
-      animation: sol-spin 2s linear infinite;
-    }
-    @keyframes sol-spin { to { transform: rotate(360deg); } }
-    .app-loading__text {
-      font-family: system-ui, sans-serif;
-      font-size: 14px;
-      color: #9c9585;
-    }
-    [data-theme="dark"] .app-loading__text { color: #6b6254; }
-  </style>
 </body>
 </html>

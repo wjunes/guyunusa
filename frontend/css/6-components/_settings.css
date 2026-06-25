@@ -305,3 +305,41 @@
   .c-settings__body { padding: var(--space-md); }
   .c-settings__header { padding: 0 var(--space-md); }
 }
+
+/* ——— Selector de idioma ——— */
+.c-lang-selector {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.c-lang-option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 9px var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--border-strong);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--text-secondary);
+  transition: border-color var(--transition), color var(--transition),
+              background var(--transition);
+  flex: 1;
+  min-width: 120px;
+  justify-content: center;
+}
+.c-lang-option:hover {
+  border-color: var(--accent-mid);
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+.c-lang-option--active {
+  border-color: var(--accent);
+  background: var(--accent-bg);
+  color: var(--accent);
+}
+.c-lang-option__flag  { font-size: 18px; line-height: 1; }
+.c-lang-option__check { margin-left: auto; font-size: var(--text-xs); }

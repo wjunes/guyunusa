@@ -2,6 +2,7 @@ import { clearApp, $ }            from '../utils/dom.js';
 import { store, router }          from '../app.js';
 import { EventBus }               from '../modules/eventBus.js';
 import { Platform, vibrate }      from '../modules/native.js';
+import { t }                      from '../modules/i18n.js';
 import { logout }                 from '../services/auth.js';
 import { sendMessage,
          loadConversations,
@@ -16,31 +17,55 @@ import { renderChatWindow,
          hideTyping }             from '../components/chatWindow.js';
 import { openShareModal }         from '../components/shareModal.js';
 import { deleteConversation }     from '../services/chat.js';
+import { maybeShowLangBanner }    from '../components/langBanner.js';
+import { initSidebarResize }      from '../modules/sidebarResize.js';
 
 window.__guyunusa__ = { EventBus };
 
 export async function mount() {
   if (!store.get('user')) { router.navigate('/login'); return; }
 
-  const isMobile = Platform.isCapacitor || window.innerWidth <= 640;
+  const isMobile = Platform.isCapacitor || window.innerWidth <= 720;
 
   const app = clearApp();
   app.innerHTML = `
     <div class="o-app" id="o-app">
+
+      <!-- Overlay mobile -->
       <div class="o-sidebar-overlay" id="sidebar-overlay"></div>
+
+      <!-- Historial (izquierda) -->
       <aside class="o-sidebar" id="o-sidebar"></aside>
+
+      <!-- Handle de resize -->
+      <div class="o-resize-handle" id="o-resize-handle" title="Arrastrá para cambiar el tamaño"></div>
+
+      <!-- Botón toggle flotante (siempre visible) -->
+      <button class="o-sidebar-toggle" id="o-sidebar-toggle"
+              aria-label="Mostrar/ocultar historial">
+      </button>
+
+      <!-- Chat (derecha, ocupa el resto) -->
       <div class="o-main">
         <div class="o-header"></div>
         <div class="o-chat"></div>
         <div class="o-inputbar"></div>
       </div>
+
     </div>
   `;
 
   try { await loadConversations(store); } catch { /* sin red */ }
 
   renderAll();
+
+  // Inicializar resize + toggle DESPUÉS de renderizar el sidebar
+  initSidebarResize();
+
   registerEvents(isMobile);
+
+  // Banner de idioma (una sola vez, con delay)
+  setTimeout(() => maybeShowLangBanner(), 1200);
 }
 
 function renderAll() {
@@ -51,7 +76,6 @@ function renderAll() {
 }
 
 function registerEvents(isMobile) {
-  // Limpiar antes de re-registrar
   [
     'sidebar:toggle', 'sidebar:close',
     'conv:new', 'conv:select', 'conv:deleted',
@@ -59,17 +83,26 @@ function registerEvents(isMobile) {
     'message:send', 'user:logout',
   ].forEach(ev => EventBus.off(ev));
 
-  EventBus.on('sidebar:toggle',        () => onSidebarToggle(isMobile));
-  EventBus.on('sidebar:close',         closeSidebar);
-  EventBus.on('conv:new',              onNewConv);
-  EventBus.on('conv:select',           id => onConvSelect(id, isMobile));
-  EventBus.on('conv:deleted',          onConvDeleted);
-  EventBus.on('conv:delete-request',   id => onDeleteRequest(id));
-  EventBus.on('conv:share',            id => openShareModal(id));
-  EventBus.on('message:send',          onMessageSend);
-  EventBus.on('user:logout',           onLogout);
+  // sidebar:toggle ahora usa el módulo de resize (no clase en o-app)
+  EventBus.on('sidebar:toggle',       () => {
+    if (isMobile) {
+      store.get('sidebarOpen') ? closeSidebarMobile() : openSidebarMobile();
+    } else {
+      // En desktop: delegar al botón flotante
+      document.getElementById('o-sidebar-toggle')?.click();
+    }
+  });
 
-  $('#sidebar-overlay')?.addEventListener('click', closeSidebar);
+  EventBus.on('sidebar:close',        () => isMobile && closeSidebarMobile());
+  EventBus.on('conv:new',             onNewConv);
+  EventBus.on('conv:select',          id => onConvSelect(id, isMobile));
+  EventBus.on('conv:deleted',         onConvDeleted);
+  EventBus.on('conv:delete-request',  id => onDeleteRequest(id));
+  EventBus.on('conv:share',           id => openShareModal(id));
+  EventBus.on('message:send',         onMessageSend);
+  EventBus.on('user:logout',          onLogout);
+
+  $('#sidebar-overlay')?.addEventListener('click', closeSidebarMobile);
 
   store.subscribe('conversations', () => {
     renderSidebar(store);
@@ -77,48 +110,42 @@ function registerEvents(isMobile) {
   });
 }
 
-/* ——— Sidebar ——— */
-function openSidebar() {
+/* ── Sidebar mobile ── */
+function openSidebarMobile() {
   $('#o-sidebar')?.classList.add('o-sidebar--open');
   $('#sidebar-overlay')?.classList.add('o-sidebar-overlay--visible');
   store.set('sidebarOpen', true);
 }
-function closeSidebar() {
+function closeSidebarMobile() {
   $('#o-sidebar')?.classList.remove('o-sidebar--open');
   $('#sidebar-overlay')?.classList.remove('o-sidebar-overlay--visible');
   store.set('sidebarOpen', false);
 }
-function onSidebarToggle(isMobile) {
-  if (isMobile) {
-    store.get('sidebarOpen') ? closeSidebar() : openSidebar();
-  } else {
-    $('#o-app')?.classList.toggle('o-app--sidebar-closed');
-  }
-}
 
-/* ——— Conversaciones ——— */
+/* ── Conversaciones ── */
 function onNewConv() {
   store.update({ activeConvId: null, messages: [] });
   renderHeader(store);
   renderChatWindow(store);
   renderInputBar(store);
-  closeSidebar();
+  if (window.innerWidth <= 720) closeSidebarMobile();
   setTimeout(() => document.getElementById('chat-input')?.focus(), 80);
 }
 
 async function onConvSelect(id, isMobile) {
-  if (store.get('activeConvId') === id) { closeSidebar(); return; }
+  if (store.get('activeConvId') === id) {
+    if (isMobile) closeSidebarMobile();
+    return;
+  }
   try {
     await loadMessages(id, store);
     renderSidebar(store);
     renderHeader(store);
     renderChatWindow(store);
     renderInputBar(store);
-    if (isMobile) closeSidebar();
+    if (isMobile) closeSidebarMobile();
     setTimeout(() => document.getElementById('chat-input')?.focus(), 80);
-  } catch (err) {
-    showError('No se pudo cargar la conversación: ' + err.message);
-  }
+  } catch (err) { showError(err.message); }
 }
 
 function onConvDeleted() {
@@ -128,9 +155,12 @@ function onConvDeleted() {
 }
 
 async function onDeleteRequest(id) {
-  // Modal de confirmación nativo (simple) — sin dependencias extra
-  const confirmed = await showDeleteConfirm();
-  if (!confirmed) return;
+  const tr = t();
+  const ok = await showConfirm(
+    tr.chat.deleteConvTitle, tr.chat.deleteConvBody,
+    tr.chat.delete, tr.chat.cancel,
+  );
+  if (!ok) return;
   try {
     await deleteConversation(id, store);
     renderSidebar(store);
@@ -140,46 +170,15 @@ async function onDeleteRequest(id) {
       renderChatWindow(store);
       renderInputBar(store);
     }
-  } catch (err) {
-    showError('No se pudo eliminar: ' + err.message);
-  }
+  } catch (err) { showError(err.message); }
 }
 
-function showDeleteConfirm() {
-  return new Promise(resolve => {
-    const overlay = document.createElement('div');
-    overlay.className = 'c-modal-overlay';
-    overlay.innerHTML = `
-      <div class="c-modal" role="dialog" aria-modal="true">
-        <div class="c-modal__title">Eliminar conversación</div>
-        <div class="c-modal__body">
-          ¿Eliminás esta conversación? No se puede deshacer.
-        </div>
-        <div class="c-modal__actions">
-          <button class="btn btn--ghost" id="del-cancel">Cancelar</button>
-          <button class="btn btn--primary" id="del-confirm"
-                  style="width:auto;background:#c0392b;">Eliminar</button>
-        </div>
-      </div>
-    `;
-    document.body.appendChild(overlay);
-    const close = val => { overlay.remove(); resolve(val); };
-    overlay.querySelector('#del-cancel').addEventListener('click',  () => close(false));
-    overlay.querySelector('#del-confirm').addEventListener('click', () => close(true));
-    overlay.addEventListener('click', e => { if (e.target === overlay) close(false); });
-  });
-}
-
-/* ——— Mensajes ——— */
+/* ── Mensajes ── */
 async function onMessageSend(text) {
   if (store.get('loading')) return;
   await vibrate('light');
 
-  appendMessage({
-    role: 'user', content: text,
-    created_at: new Date().toISOString(),
-  }, store);
-
+  appendMessage({ role: 'user', content: text, created_at: new Date().toISOString() }, store);
   showTyping();
   setInputLoading(true);
 
@@ -203,8 +202,7 @@ async function onMessageSend(text) {
   } catch {
     hideTyping();
     appendMessage({
-      role: 'assistant',
-      content: '⚠ No pude conectarme ahora mismo. Chequeá tu conexión e intentá de nuevo.',
+      role: 'assistant', content: t().chat.errorConn,
       created_at: new Date().toISOString(),
     }, store);
   } finally {
@@ -213,13 +211,31 @@ async function onMessageSend(text) {
   }
 }
 
-/* ——— Auth ——— */
-function onLogout() {
-  logout(store);
-  router.navigate('/login');
+function onLogout() { logout(store); router.navigate('/login'); }
+
+/* ── Helpers ── */
+function showConfirm(title, body, confirmLabel, cancelLabel) {
+  return new Promise(resolve => {
+    const overlay = document.createElement('div');
+    overlay.className = 'c-modal-overlay';
+    overlay.innerHTML = `
+      <div class="c-modal" role="dialog" aria-modal="true">
+        <div class="c-modal__title">${title}</div>
+        <div class="c-modal__body">${body}</div>
+        <div class="c-modal__actions">
+          <button class="btn btn--ghost" id="mc">${cancelLabel}</button>
+          <button class="btn btn--primary" id="mk"
+                  style="width:auto;background:#c0392b;">${confirmLabel}</button>
+        </div>
+      </div>`;
+    document.body.appendChild(overlay);
+    const close = val => { overlay.remove(); resolve(val); };
+    overlay.querySelector('#mc').addEventListener('click',  () => close(false));
+    overlay.querySelector('#mk').addEventListener('click',  () => close(true));
+    overlay.addEventListener('click', e => { if (e.target === overlay) close(false); });
+  });
 }
 
-/* ——— UI helpers ——— */
 function showError(msg) {
   const existing = document.getElementById('chat-error');
   if (existing) existing.remove();
@@ -227,11 +243,10 @@ function showError(msg) {
   el.id = 'chat-error';
   el.textContent = msg;
   el.style.cssText = `
-    position:fixed; bottom:100px; left:50%; transform:translateX(-50%);
-    background:#c0392b; color:white; padding:10px 20px;
-    border-radius:8px; font-size:14px; z-index:300;
-    box-shadow:0 4px 16px rgba(0,0,0,.2); white-space:nowrap;
-  `;
+    position:fixed;bottom:100px;left:50%;transform:translateX(-50%);
+    background:#c0392b;color:white;padding:10px 20px;
+    border-radius:8px;font-size:14px;z-index:300;
+    box-shadow:0 4px 16px rgba(0,0,0,.2);white-space:nowrap;`;
   document.body.appendChild(el);
   setTimeout(() => el.remove(), 4000);
 }

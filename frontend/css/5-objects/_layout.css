@@ -1,34 +1,165 @@
-/* Layout principal de la app de chat */
+/* =============================================
+   LAYOUT PRINCIPAL — Guyunusa
+   
+   ┌──────────────┬─┬──────────────────────────┐
+   │   Sidebar    │R│       Main (chat)         │
+   │  (historial) │e│  header / mensajes /      │
+   │  20% máx     │s│       inputbar            │
+   │  160px mín   │i│       80% mínimo          │
+   └──────────────┴─┴──────────────────────────┘
+   R = resize handle draggable
+   ============================================= */
+
+:root {
+  --sidebar-w:     260px;   /* ancho inicial del sidebar */
+  --sidebar-min:   160px;   /* mínimo arrastrable */
+  --sidebar-max:   420px;   /* máximo arrastrable */
+  --resize-w:      5px;     /* ancho del handle de resize */
+  --header-h:      56px;
+}
+
+/* Contenedor raíz: flex row */
 .o-app {
-  display: grid;
-  grid-template-columns: var(--sidebar-w) 1fr;
-  grid-template-rows: 100vh;
+  display: flex;
+  flex-direction: row;
   height: 100vh;
   overflow: hidden;
+  position: relative;
 }
 
-.o-app--sidebar-closed {
-  grid-template-columns: 0 1fr;
+/* ── Sidebar (izquierda) ── */
+.o-sidebar {
+  width: var(--sidebar-w);
+  min-width: var(--sidebar-min);
+  max-width: var(--sidebar-max);
+  flex-shrink: 0;
+  height: 100vh;
+  overflow: hidden;
+  position: relative;
+  transition: width 200ms ease; /* solo para ocultar/mostrar, no drag */
 }
 
+/* Sidebar oculto — colapsa a 0 */
+.o-sidebar--hidden {
+  width: 0 !important;
+  min-width: 0 !important;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ── Handle de resize (entre sidebar y main) ── */
+.o-resize-handle {
+  width: var(--resize-w);
+  flex-shrink: 0;
+  height: 100vh;
+  background: var(--border-color);
+  cursor: col-resize;
+  position: relative;
+  z-index: 10;
+  transition: background 150ms;
+  user-select: none;
+}
+.o-resize-handle:hover,
+.o-resize-handle--dragging {
+  background: var(--accent);
+}
+/* Zona de agarre ampliada (invisible) */
+.o-resize-handle::before {
+  content: '';
+  position: absolute;
+  inset: 0 -6px;
+  cursor: col-resize;
+}
+/* Handle oculto cuando sidebar está escondido */
+.o-sidebar--hidden + .o-resize-handle {
+  display: none;
+}
+
+/* ── Botón toggle FLOTANTE — siempre visible ── */
+.o-sidebar-toggle {
+  position: fixed;
+  top: calc(var(--header-h) / 2);
+  transform: translateY(-50%);
+  left: calc(var(--sidebar-w) + var(--resize-w) + 6px);
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-strong);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+  transition: left 200ms ease, background 150ms, color 150ms, border-color 150ms;
+}
+.o-sidebar-toggle:hover {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+/* Cuando sidebar oculto, el toggle se pega al borde izquierdo */
+.o-sidebar-toggle--collapsed {
+  left: 8px;
+}
+
+/* ── Columna principal (derecha) ── */
 .o-main {
-  display: grid;
-  grid-template-rows: var(--header-h) 1fr var(--inputbar-h);
+  flex: 1;
+  min-width: 0;          /* evita desborde */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-app);
+}
+
+.o-header  { flex-shrink: 0; }
+
+.o-chat {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
-@media (max-width: 640px) {
-  .o-app {
-    grid-template-columns: 1fr;
-  }
+.o-inputbar { flex-shrink: 0; }
+
+/* ── Overlay sidebar (mobile) ── */
+.o-sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.45);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+.o-sidebar-overlay--visible { display: block; }
+
+/* ── Mobile (≤720px): sidebar como drawer ── */
+@media (max-width: 720px) {
   .o-sidebar {
     position: fixed;
-    inset: 0;
+    top: 0; left: 0; bottom: 0;
     z-index: 100;
+    width: min(300px, 85vw) !important;
     transform: translateX(-100%);
-    transition: transform var(--transition);
+    transition: transform 280ms cubic-bezier(.4,0,.2,1);
   }
   .o-sidebar--open {
-    transform: translateX(0);
+    transform: translateX(0) !important;
+    box-shadow: var(--shadow-md);
+  }
+  .o-sidebar--hidden {
+    transform: translateX(-100%) !important;
+    width: min(300px, 85vw) !important;
+  }
+  .o-resize-handle { display: none; }
+  .o-sidebar-toggle {
+    left: 8px !important;
+    top: calc(var(--header-h) / 2);
   }
 }

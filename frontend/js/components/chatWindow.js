@@ -1,16 +1,11 @@
 import { $ }                    from '../utils/dom.js';
 import { scrollToBottom }       from '../utils/helpers.js';
 import { initial }              from '../utils/helpers.js';
+import { t, getLang }           from '../modules/i18n.js';
 import { createMessageItem,
          createTypingIndicator } from './messageItem.js';
-
-const SUGGESTIONS = [
-  '¿Quién fue Artigas y por qué es tan importante?',
-  'Contame sobre el Carnaval de Montevideo',
-  'Explicame qué es el candombe',
-  '¿Cuáles son los mejores libros de Mario Benedetti?',
-  'Dame una receta de chivito uruguayo',
-];
+import { EventBus }              from '../modules/eventBus.js';
+import { createStoryCard }       from './storyCard.js';
 
 export function renderChatWindow(store) {
   const el = $('.o-chat');
@@ -19,43 +14,52 @@ export function renderChatWindow(store) {
   const messages = store.get('messages') || [];
   const user     = store.get('user') || {};
   const userInit = initial(user.username);
+  const tr       = t();
 
   el.innerHTML = `
     <div class="c-chat">
       <div class="c-chat__messages" id="messages-list">
-        ${messages.length === 0 ? renderEmpty() : ''}
+        ${messages.length === 0 ? renderEmpty(tr) : ''}
       </div>
     </div>
   `;
 
+  const list = $('#messages-list');
+
   if (messages.length > 0) {
-    const list = $('#messages-list');
     messages.forEach(msg => list.appendChild(createMessageItem(msg, userInit)));
     scrollToBottom(list);
+  } else {
+    // Insertar la tarjeta de historia PRIMERO, antes de las sugerencias
+    const card = createStoryCard(getLang());
+    list.insertBefore(card, list.firstChild);
   }
 
-  // Sugerencias — clic envía el texto como mensaje
+  // Sugerencias — clic envía el mensaje
   el.querySelectorAll('.c-chat__suggestion').forEach(btn => {
     btn.addEventListener('click', () => {
-      const { EventBus } = window.__guyunusa__ || {};
-      if (EventBus) EventBus.emit('message:send', btn.dataset.text);
+      EventBus.emit('message:send', btn.dataset.text);
     });
   });
 }
 
-/** Agrega un mensaje al DOM sin re-renderizar todo */
 export function appendMessage(msg, store) {
   const list = $('#messages-list');
   if (!list) return;
 
-  // Quitar estado vacío si existe
+  // Quitar estado vacío (empty + story card) al llegar el primer mensaje
   const empty = list.querySelector('.c-chat__empty');
   if (empty) empty.remove();
+  const card = list.querySelector('.c-story-card');
+  if (card) {
+    card.style.transition = 'opacity 200ms, transform 200ms';
+    card.style.opacity = '0';
+    setTimeout(() => card.remove(), 200);
+  }
 
   const user     = store.get('user') || {};
   const userInit = initial(user.username);
-  const item     = createMessageItem(msg, userInit);
-  list.appendChild(item);
+  list.appendChild(createMessageItem(msg, userInit));
   scrollToBottom(list);
 }
 
@@ -70,28 +74,22 @@ export function hideTyping() {
   document.getElementById('typing-indicator')?.remove();
 }
 
-function renderEmpty() {
+function renderEmpty(tr) {
+  const suggestions = tr.chat.suggestions || [];
   return `
     <div class="c-chat__empty">
-      <div class="c-chat__empty-icon">
-        <svg width="52" height="52" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" opacity=".5">
-          <circle cx="45" cy="45" r="20" fill="#e8b84b"/>
-          <circle cx="45" cy="45" r="17" fill="#f0c96a"/>
-          <circle cx="39" cy="43" r="2.2" fill="#b8860b"/>
-          <circle cx="51" cy="43" r="2.2" fill="#b8860b"/>
-          <path d="M39 51 Q45 56 51 51" stroke="#b8860b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-        </svg>
-      </div>
-      <div class="c-chat__empty-title">¡Hola! Soy Guyunusa</div>
-      <p class="c-chat__empty-sub">
-        Una IA con alma uruguaya. Preguntame lo que quieras —
-        desde historia hasta código, siempre con identidad propia.
-      </p>
+      <div class="c-chat__empty-title">${tr.chat.emptyTitle}</div>
+      <p class="c-chat__empty-sub">${tr.chat.emptySub}</p>
       <div class="c-chat__suggestions">
-        ${SUGGESTIONS.map(s =>
-          `<button class="c-chat__suggestion" data-text="${s}">${s}</button>`
+        ${suggestions.map(s =>
+          `<button class="c-chat__suggestion" data-text="${escHTML(s)}">${escHTML(s)}</button>`
         ).join('')}
       </div>
-    </div>
-  `;
+    </div>`;
+}
+
+function escHTML(s) {
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }

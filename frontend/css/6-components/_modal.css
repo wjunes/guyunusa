@@ -137,3 +137,79 @@
   transition: opacity .2s;
 }
 .c-share-modal__copied.visible { opacity: 1; }
+
+/* ——— Banner de detección de idioma ——— */
+.c-lang-banner {
+  position: fixed;
+  bottom: var(--space-lg);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--bg-primary);
+  border: 1.5px solid var(--border-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-md);
+  padding: var(--space-md) var(--space-lg);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  max-width: 380px;
+  width: calc(100vw - var(--space-xl));
+  animation: slideUp .25s ease;
+}
+
+.c-lang-banner__text {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+.c-lang-banner__text strong {
+  color: var(--text-primary);
+  font-weight: var(--weight-medium);
+}
+
+.c-lang-banner__actions {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.c-lang-banner__btn {
+  flex: 1;
+  padding: 8px var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  cursor: pointer;
+  transition: background var(--transition), border-color var(--transition);
+  border: 1.5px solid var(--border-strong);
+  background: transparent;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.c-lang-banner__btn:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+.c-lang-banner__btn--primary {
+  background: var(--accent);
+  color: white;
+  border-color: var(--accent);
+}
+.c-lang-banner__btn--primary:hover {
+  background: var(--accent-hover);
+  border-color: var(--accent-hover);
+}
+
+.c-lang-banner__dismiss {
+  align-self: flex-end;
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: underline;
+}
+.c-lang-banner__dismiss:hover { color: var(--text-secondary); }

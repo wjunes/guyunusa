@@ -73,3 +73,9 @@
   background: var(--bg-secondary);
   color: var(--text-primary);
 }
+
+/* Garantizar que el header tenga alto fijo */
+.c-header {
+  height: var(--header-h);
+  flex-shrink: 0;
+}
