@@ -45,3 +45,22 @@ CREATE INDEX IF NOT EXISTS idx_messages_conversation ON messages(conversation_id
 CREATE INDEX IF NOT EXISTS idx_conversations_user    ON conversations(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_token        ON sessions(token);
 CREATE INDEX IF NOT EXISTS idx_sessions_user         ON sessions(user_id);
+
+-- Tabla de pagos
+CREATE TABLE IF NOT EXISTS payments (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id      INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  provider     TEXT    NOT NULL CHECK(provider IN ('mercadopago','paypal')),
+  external_id  TEXT,
+  preference_id TEXT,
+  status       TEXT    NOT NULL DEFAULT 'pending',
+  amount       REAL    NOT NULL DEFAULT 6.00,
+  currency     TEXT    NOT NULL DEFAULT 'USD',
+  metadata     TEXT,
+  created_at   TEXT    NOT NULL DEFAULT (datetime('now')),
+  updated_at   TEXT    NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE INDEX IF NOT EXISTS idx_payments_user       ON payments(user_id);
+CREATE INDEX IF NOT EXISTS idx_payments_external   ON payments(external_id);
+CREATE INDEX IF NOT EXISTS idx_payments_preference ON payments(preference_id);

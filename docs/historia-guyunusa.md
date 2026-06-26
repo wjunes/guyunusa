@@ -19,6 +19,8 @@ Cuando el mundo se detuvo en 2020, Willans aceleró.
 
 Mientras la pandemia de COVID-19 paralizaba economías y cerraba fronteras, él encontró en ese tiempo forzado una oportunidad que no iba a desperdiciar: profundizar en la inteligencia artificial. No como observador, sino como constructor.
 
+A mitad de ese período llegó algo inesperado: la oportunidad de rendir exámenes para acceder a una beca en el curso de Ciencias de la Computación de Harvard. No una plataforma genérica. Harvard. Rindió. Aprobó. Y en nueve meses completó un programa que la universidad más antigua de América lleva casi cuatro siglos acumulando prestigio para ofrecer. El encierro que paralizó al mundo fue, para Willans, acelerador.
+
 Investigó modelos de lenguaje, APIs, arquitecturas de sistemas, prompts de identidad. Aprendió haciendo, como siempre. Y lo que emergió de ese período no fue un solo proyecto sino un ecosistema entero de herramientas, todas con una marca común: identidad uruguaya, utilidad real, independencia total.
 
 ---

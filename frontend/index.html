@@ -2,10 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0,
-        viewport-fit=cover, maximum-scale=1.0, user-scalable=no"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="description" content="Guyunusa — Inteligencia artificial con identidad uruguaya"/>
-  <meta name="theme-color" content="#1a4fa0"/>
   <meta name="mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -22,6 +20,7 @@
     })();
   </script>
 
+  <link rel="icon" type="image/x-icon" href="assets/icons/guyunusa.ico"/>
   <title>Guyunusa</title>
   <link rel="stylesheet" href="css/main.css"/>
 
@@ -49,14 +48,9 @@
 <body>
   <div id="app">
     <div class="app-loading">
-      <svg class="app-loading__sol" width="52" height="52" viewBox="0 0 90 90">
-        <circle cx="45" cy="45" r="20" fill="#e8b84b"/>
-        <circle cx="45" cy="45" r="17" fill="#f0c96a"/>
-        <circle cx="39" cy="43" r="2.2" fill="#b8860b"/>
-        <circle cx="51" cy="43" r="2.2" fill="#b8860b"/>
-        <path d="M39 51 Q45 56 51 51" stroke="#b8860b" stroke-width="1.8"
-              fill="none" stroke-linecap="round"/>
-      </svg>
+      <img class="app-loading__sol" src="assets/images/guyunusa.png"
+           alt="Guyunusa" width="72" height="72"
+           style="border-radius:50%;object-fit:cover;"/>
       <span class="app-loading__text">Cargando Guyunusa...</span>
     </div>
   </div>

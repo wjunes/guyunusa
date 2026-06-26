@@ -22,6 +22,13 @@ export class Router {
   async _resolve() {
     const hash = window.location.hash.slice(1) || '/';
 
+    // Rutas de resultado de pago — manejar antes del guard
+    if (hash.startsWith('/payment/')) {
+      const { handlePaymentReturn } = await import('../components/paymentModal.js');
+      await handlePaymentReturn();
+      return;
+    }
+
     // Aplicar guardia
     if (this._guard) {
       const redirect = this._guard(hash);

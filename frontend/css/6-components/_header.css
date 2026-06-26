@@ -1,31 +1,23 @@
+/* =============================================
+   HEADER DEL CHAT
+   ============================================= */
+
 .c-header {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
-  padding: 0 var(--space-md);
+  /* padding-left reserva espacio para el botón flotante de toggle */
+  padding: 0 var(--space-md) 0 calc(28px + var(--space-md) + var(--space-sm));
   height: var(--header-h);
+  flex-shrink: 0;
   background: var(--bg-primary);
   border-bottom: 1px solid var(--border-color);
   position: relative;
   z-index: 10;
+  min-width: 0;
 }
 
-.c-header__toggle {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-sm);
-  color: var(--text-secondary);
-  transition: background var(--transition), color var(--transition);
-  flex-shrink: 0;
-}
-.c-header__toggle:hover {
-  background: var(--bg-secondary);
-  color: var(--text-primary);
-}
-
+/* Título de la conversación activa */
 .c-header__title {
   flex: 1;
   font-size: var(--text-sm);
@@ -34,27 +26,10 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  min-width: 0;
 }
 
-.c-header__new-btn {
-  display: flex;
-  align-items: center;
-  gap: var(--space-xs);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  font-size: var(--text-sm);
-  font-weight: var(--weight-medium);
-  color: var(--accent);
-  border: 1.5px solid var(--color-azul-light);
-  background: var(--accent-bg);
-  transition: background var(--transition), border-color var(--transition);
-}
-.c-header__new-btn:hover {
-  background: var(--color-azul-light);
-  border-color: var(--accent);
-}
-
-/* Botón de toggle de tema */
+/* Toggle de tema (sol / luna) */
 .c-header__theme-btn {
   display: flex;
   align-items: center;
@@ -66,16 +41,39 @@
   background: transparent;
   border: none;
   cursor: pointer;
-  transition: background var(--transition), color var(--transition);
   flex-shrink: 0;
+  transition: background var(--transition), color var(--transition);
 }
 .c-header__theme-btn:hover {
   background: var(--bg-secondary);
   color: var(--text-primary);
 }
 
-/* Garantizar que el header tenga alto fijo */
-.c-header {
-  height: var(--header-h);
+/* Botón nueva conversación */
+.c-header__new-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--accent);
+  border: 1.5px solid var(--color-azul-light);
+  background: var(--accent-bg);
   flex-shrink: 0;
+  white-space: nowrap;
+  transition: background var(--transition), border-color var(--transition);
+}
+.c-header__new-btn:hover {
+  background: var(--color-azul-light);
+  border-color: var(--accent);
+}
+
+/* Mobile: padding más chico */
+@media (max-width: 720px) {
+  .c-header {
+    padding: 0 var(--space-sm) 0 calc(28px + var(--space-sm) * 2);
+  }
+  .c-header__new-btn span { display: none; }
 }

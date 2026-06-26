@@ -21,7 +21,7 @@ export async function sendMessage(req, res) {
 
   try {
     // ── Verificar límite diario (plan free) ──
-    const user = db.prepare('SELECT plan FROM users WHERE id = ?').get(userId);
+    const user = db.prepare('SELECT plan, username FROM users WHERE id = ?').get(userId);
     if (!user) {
       return res.status(HTTP_STATUS.UNAUTHORIZED).json({
         ok: false, message: 'Usuario no encontrado'
@@ -63,8 +63,10 @@ export async function sendMessage(req, res) {
       'SELECT role, content FROM messages WHERE conversation_id = ? ORDER BY id DESC LIMIT 20'
     ).all(convId).reverse();
 
+    // System prompt personalizado con el nombre del usuario
+    const userContext = `\n\n## Usuario actual\nEstás hablando con ${user.username}. Podés llamarle por su nombre o apodo cuando sea natural hacerlo.`;
     const messages = [
-      { role: 'system', content: SYSTEM_PROMPT },
+      { role: 'system', content: SYSTEM_PROMPT + userContext },
       ...history,
     ];
 

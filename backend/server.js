@@ -6,7 +6,8 @@ import { logger }                      from './src/utils/logger.js';
 import { errorMiddleware }             from './src/middleware/error.middleware.js';
 
 import authRoutes from './src/routes/auth.routes.js';
-import storyRoutes from './src/routes/story.routes.js';
+import storyRoutes   from './src/routes/story.routes.js';
+import paymentRoutes from './src/routes/payment.routes.js';
 import chatRoutes from './src/routes/chat.routes.js';
 import userRoutes from './src/routes/user.routes.js';
 
@@ -67,7 +68,8 @@ async function main() {
 
   // ── Rutas API ──
   app.use('/api/v1/auth',  authRoutes);
-  app.use('/api/v1/story', storyRoutes);
+  app.use('/api/v1/story',   storyRoutes);
+  app.use('/api/v1/payment', paymentRoutes);
   app.use('/api/v1/chat', chatRoutes);
   app.use('/api/v1/user', userRoutes);
 

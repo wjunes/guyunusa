@@ -1,4 +1,7 @@
-import { $ }                    from '../utils/dom.js';
+      <div class="c-chat__empty-icon">
+        <img src="assets/images/guyunusa.png" alt="Guyunusa"
+             style="width:80px;height:80px;border-radius:50%;object-fit:cover;opacity:.75;"/>
+      </div>import { $ }                    from '../utils/dom.js';
 import { scrollToBottom }       from '../utils/helpers.js';
 import { initial }              from '../utils/helpers.js';
 import { t, getLang }           from '../modules/i18n.js';

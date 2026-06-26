@@ -7,6 +7,7 @@ import { t, getLang }         from '../modules/i18n.js';
 import { renderLangSelector } from '../components/langSelector.js';
 import { initial }            from '../utils/helpers.js';
 import { Platform }           from '../modules/native.js';
+import { openPaymentModal }    from '../components/paymentModal.js';
 import { FREE_DAILY_LIMIT }   from '../../../shared/constants.js';
 
 const APP_VERSION = '1.0.0';
@@ -416,9 +417,7 @@ function bindEvents(s) {
   });
 
   /* Upgrade (placeholder) */
-  $('#upgrade-btn')?.addEventListener('click', () => {
-    alert('🧉 Plan Pro próximamente disponible en guyunusa.uy');
-  });
+  $('#upgrade-btn')?.addEventListener('click', () => openPaymentModal());
 
   /* Cerrar sesión */
   $('#logout-btn')?.addEventListener('click', () => {

@@ -55,11 +55,6 @@ function escapeHTML(str) {
 }
 
 function solIconSmall() {
-  return `<svg width="22" height="22" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="45" cy="45" r="20" fill="#e8b84b"/>
-    <circle cx="45" cy="45" r="17" fill="#f0c96a"/>
-    <circle cx="39" cy="43" r="2.2" fill="#b8860b"/>
-    <circle cx="51" cy="43" r="2.2" fill="#b8860b"/>
-    <path d="M39 51 Q45 56 51 51" stroke="#b8860b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-  </svg>`;
+  return `<img src="assets/icons/guyunusa.ico" alt="Guyunusa"
+               style="width:22px;height:22px;border-radius:50%;object-fit:contain;"/>`;
 }

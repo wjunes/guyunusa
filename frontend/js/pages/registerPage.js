@@ -134,27 +134,6 @@ function themeIcon() {
 }
 
 function solDeMayoSVG() {
-  return `
-  <svg width="90" height="90" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg">
-    <style>
-      .sol-r { transform-origin: 45px 45px; animation: rotar-r 18s linear infinite; }
-      @keyframes rotar-r { to { transform: rotate(360deg); } }
-    </style>
-    <g class="sol-r" opacity="0.85">
-      ${Array.from({length:16},(_,i)=>{
-        const a=(i*360/16)*Math.PI/180;
-        const x1=(45+24*Math.cos(a)).toFixed(1), y1=(45+24*Math.sin(a)).toFixed(1);
-        const x2=(45+38*Math.cos(a)).toFixed(1), y2=(45+38*Math.sin(a)).toFixed(1);
-        const x3=(45+33*Math.cos(a)).toFixed(1), y3=(45+33*Math.sin(a)).toFixed(1);
-        return i%2===0
-          ? `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#e8b84b" stroke-width="3" stroke-linecap="round"/>`
-          : `<line x1="${x1}" y1="${y1}" x2="${x3}" y2="${y3}" stroke="#e8b84b" stroke-width="1.5" stroke-linecap="round"/>`;
-      }).join('')}
-    </g>
-    <circle cx="45" cy="45" r="20" fill="#e8b84b"/>
-    <circle cx="45" cy="45" r="17" fill="#f0c96a"/>
-    <circle cx="39" cy="43" r="2.2" fill="#b8860b"/>
-    <circle cx="51" cy="43" r="2.2" fill="#b8860b"/>
-    <path d="M39 51 Q45 56 51 51" stroke="#b8860b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-  </svg>`;
+  return `<img src="assets/icons/guyunusa.ico" alt="Guyunusa"
+               style="width:90px;height:90px;border-radius:50%;object-fit:contain;"/>`;
 }

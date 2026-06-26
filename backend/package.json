@@ -1,23 +1,24 @@
 {
   "name": "guyunusa-backend",
   "version": "1.0.0",
-  "description": "Backend de Guyunusa — IA con identidad uruguaya",
+  "description": "Backend de Guyunusa \u2014 IA con identidad uruguaya",
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start":       "node server.js",
-    "dev":         "node --watch server.js",
-    "check":       "node scripts/check-env.js",
-    "db:reset":    "node -e \"import('./src/db/database.js').then(m => m.initDB('./data/guyunusa.db')).then(() => { console.log('DB reiniciada'); process.exit(0); })\""
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "check": "node scripts/check-env.js",
+    "db:reset": "node -e \"import('./src/db/database.js').then(m => m.initDB('./data/guyunusa.db')).then(() => { console.log('DB reiniciada'); process.exit(0); })\""
   },
   "dependencies": {
     "better-sqlite3": "^9.4.3",
-    "bcryptjs":       "^2.4.3",
-    "cors":           "^2.8.5",
-    "dotenv":         "^16.4.5",
-    "express":        "^4.18.3",
-    "jsonwebtoken":   "^9.0.2",
-    "sql.js":         "^1.11.0"
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "jsonwebtoken": "^9.0.2",
+    "sql.js": "^1.11.0",
+    "mercadopago": "^2.0.15"
   },
   "engines": {
     "node": ">=18.0.0"
